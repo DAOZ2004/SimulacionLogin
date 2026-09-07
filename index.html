@@ -128,23 +128,59 @@
     <div id="resultado"></div>
 
     <div class="warning">
-      Datos.
+      Simulación académica.
     </div>
 
   </div>
-
 
   <script>
     const formulario = document.getElementById("loginForm");
     const resultado = document.getElementById("resultado");
 
-    formulario.addEventListener("submit", function(event) {
+    formulario.addEventListener("submit", async function(event) {
 
+      // Evita que el formulario HTML real envíe
+      // el correo y la contraseña.
       event.preventDefault();
 
-      // No se leen, guardan ni transmiten las credenciales.
-      resultado.textContent =
-        "Información correcta";
+      // Información ficticia utilizada únicamente
+      // para demostrar una petición HTTP POST.
+      const datosDemo = new URLSearchParams();
+
+      datosDemo.append(
+        "evento",
+        "intento_login_simulado"
+      );
+
+      datosDemo.append(
+        "resultado",
+        "demo_academica"
+      );
+
+      try {
+
+        // Genera una petición HTTP POST.
+        // NO incluye el correo ni la contraseña.
+        const respuesta = await fetch("/", {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/x-www-form-urlencoded"
+          },
+
+          body: datosDemo.toString()
+        });
+
+        resultado.textContent =
+          "Información correcta";
+
+      } catch (error) {
+
+        resultado.textContent =
+          "No se pudo completar la simulación";
+
+      }
 
       formulario.reset();
     });
